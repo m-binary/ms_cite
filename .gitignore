@@ -1,0 +1,8 @@
+.env
+
+*Venv*
+*venv*
+__pycache__/
+
+emails.json
+mongodb
