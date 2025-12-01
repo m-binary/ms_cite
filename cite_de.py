@@ -24,6 +24,10 @@ patterns = [
 
 print("📋 Watching clipboard... Press Ctrl+C to stop.")
 
+def is_already_latex(text):
+    """Prüft, ob der Text bereits eine LaTeX-Zitation ist (um Endlosschleifen zu vermeiden)."""
+    return text.strip().startswith("\\cite")
+
 def format_citation(bibkey, style, page1=None, page2=None, f_suffix=None):
     bibkey = bibkey.strip()
     # Mapping anwenden (z.B. für Experteninterviews)
@@ -69,6 +73,10 @@ while True:
         clipboard = pyperclip.paste()
         if clipboard != last_clipboard:
             last_clipboard = clipboard.strip()
+            
+            # Eigene Ausgabe ignorieren (verhindert Endlosschleife)
+            if is_already_latex(last_clipboard):
+                continue
             
             # Mehrere Quellen durch Semikolon getrennt
             citations = [c.strip() for c in last_clipboard.split(";")]
